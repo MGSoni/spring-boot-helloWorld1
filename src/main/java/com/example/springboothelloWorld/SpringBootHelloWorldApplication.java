@@ -1,0 +1,44 @@
+package com.example.springboothelloWorld;
+
+import com.example.springboothelloWorld.servlet.HelloFilter;
+import com.example.springboothelloWorld.servlet.HelloListener;
+import com.example.springboothelloWorld.servlet.HelloServlet;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+//@ServletComponentScan     //Used when create servlet without bean Use @ServletComponentScan annotation.
+                            //Use @Bean annotation.
+
+public class SpringBootHelloWorldApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootHelloWorldApplication.class, args);
+    }
+
+
+    @Bean
+    public ServletRegistrationBean getServletRegistrationBean() {
+        ServletRegistrationBean servletBean = new ServletRegistrationBean(new HelloServlet());
+        servletBean.addUrlMappings("/helloServlet");
+        return servletBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean getFilterRegistrationBean(){
+        FilterRegistrationBean filterBean = new FilterRegistrationBean(new HelloFilter());
+        filterBean.addUrlPatterns("/helloServlet");
+        return filterBean;
+    }
+    @Bean
+    public ServletListenerRegistrationBean<HelloListener> getServletListenerRegistrationBean(){
+        ServletListenerRegistrationBean listenerBean = new ServletListenerRegistrationBean(new HelloListener());
+        return listenerBean;
+    }
+
+}
